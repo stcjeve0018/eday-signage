@@ -1,6 +1,8 @@
 // app/api/estimate/route.ts
 import { NextRequest, NextResponse } from "next/server";
 
+export const runtime = 'edge'; 
+
 type EstimateRequestBody = {
   width_cm: number;
   height_cm: number;
@@ -11,6 +13,7 @@ type EstimateRequestBody = {
   customer_mobile?: string;
   note?: string;
 };
+
 
 export async function POST(req: NextRequest) {
   try {
