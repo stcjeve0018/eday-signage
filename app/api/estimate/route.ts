@@ -156,14 +156,33 @@ export async function POST(req: NextRequest) {
 
       if (!res.ok) {
         const text = await res.text();
-        console.error("Airtable error:", res.status, text);
+
+        // 🔍 暫時直接把 Airtable 的錯誤丟回給前端，方便除錯
+        return NextResponse.json(
+          {
+            ok: false,
+            error: "AIRTABLE_ERROR",
+            status: res.status,
+            body: text,
+          },
+          { status: 500 }
+        );
       } else {
         const data = await res.json();
         airtableRecordId = data.records?.[0]?.id ?? null;
       }
-    } catch (err) {
-      console.error("Error calling Airtable:", err);
+    } catch (err: any) {
+      // 呼叫 fetch 本身就炸掉的情況
+      return NextResponse.json(
+        {
+          ok: false,
+          error: "AIRTABLE_FETCH_ERROR",
+          message: String(err),
+        },
+        { status: 500 }
+      );
     }
+
 
     // 5) 回傳給前端
     return NextResponse.json(
