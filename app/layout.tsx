@@ -1,33 +1,29 @@
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import { NavBar } from "@/components/layout/NavBar";
+import { Footer } from "@/components/layout/Footer";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+const inter = Inter({ subsets: ["latin"] });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-export const metadata = {
-  title: "一代廣告 Eday｜專業招牌設計與施工",
-  description:
-    "一代廣告（Eday）專精各式招牌設計、LED 燈箱、立體字、壓克力字、室內外形象牆。結合線上估價與傳統工法，提供一站式招牌規劃與施工服務。",
+export const metadata: Metadata = {
+  title: "Eday 一代廣告 | 專業招牌設計製作",
+  description: "線上估價、作品展示、招牌百科。我們提供最專業的廣告招牌解決方案。",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+    <html lang="zh-TW" className="dark">
+      <body className={`${inter.className} bg-gray-950 text-gray-100 min-h-screen flex flex-col`}>
+        <NavBar />
+        <main className="flex-grow pt-16">
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
   );
