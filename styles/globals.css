@@ -23,3 +23,28 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* ▼▼▼ 強制加入動畫設定 (無視 tailwind.config) ▼▼▼ */
+@keyframes infinite-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
+}
+
+@keyframes infinite-scroll-reverse {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+.animate-infinite-scroll {
+  animation: infinite-scroll 30s linear infinite;
+}
+
+.animate-infinite-scroll-reverse {
+  animation: infinite-scroll-reverse 30s linear infinite;
+}
+
+/* 讓滑鼠移過去時暫停 */
+.group:hover .animate-infinite-scroll,
+.group:hover .animate-infinite-scroll-reverse {
+  animation-play-state: paused;
+}
