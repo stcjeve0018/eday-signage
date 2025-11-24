@@ -1,4 +1,81 @@
-// ... (上面的 import 和 Hero, Marquee, Who We Are 保持不變)
+import Link from "next/link";
+import { Button } from "@/components/ui/Button";
+import { BrandMarquee } from "@/components/home/BrandMarquee";
+import { ServicesSection } from "@/components/home/ServicesSection"; // 引入新組件
+import { DynamicCTA } from "@/components/home/DynamicCTA";
+
+export default function Home() {
+  return (
+    <main className="min-h-screen pt-20 overflow-x-hidden bg-neutral-950">
+      
+      {/* 1. Hero Section */}
+      <section className="relative h-[85vh] flex flex-col justify-center px-6 md:px-20 border-b border-neutral-800">
+        <div className="max-w-7xl mx-auto w-full z-10">
+          <h1 className="text-6xl md:text-9xl font-black uppercase italic tracking-tighter leading-[0.9] mb-8">
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-gray-500 to-gray-200 hover:text-white transition-colors duration-500">We Make</span>
+            <span className="block text-red-600">Signage</span>
+            <span className="block text-white">Stand Out.</span>
+          </h1>
+          <p className="text-xl md:text-2xl text-gray-400 max-w-xl font-medium border-l-4 border-red-600 pl-6 mb-10">
+            一代廣告 Eday — 
+            專注於將您的品牌視覺轉化為實體震撼。
+          </p>
+          <div className="flex gap-4">
+            <Link href="/estimate">
+              <Button className="rounded-full text-lg px-8 py-6 shadow-red-600/20">立即估價</Button>
+            </Link>
+            <Link href="/cases">
+              <Button variant="outline" className="rounded-full text-lg px-8 py-6">作品案例</Button>
+            </Link>
+          </div>
+        </div>
+        {/* 背景大字 */}
+        <div className="absolute -right-20 top-1/2 -translate-y-1/2 text-[20vw] font-black text-neutral-900 -z-0 select-none opacity-50 pointer-events-none">
+          EDAY
+        </div>
+      </section>
+
+      {/* 2. Brand Wall (4 Rows) */}
+      <BrandMarquee />
+
+      {/* 3. Who We Are Section (獨立區塊，修正文字顏色與平衡) */}
+      <section className="py-24 md:py-32 px-6 md:px-20 bg-neutral-900 relative border-b border-neutral-800">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          
+          {/* 左側：大標題與簡介 */}
+          <div>
+            <span className="text-blue-500 font-bold tracking-widest mb-4 block">ABOUT US</span>
+            <h2 className="text-5xl md:text-8xl font-black uppercase text-white mb-8 tracking-tighter leading-none">
+              WHO <br/>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">WE ARE</span>
+            </h2>
+            <div className="space-y-6 text-lg text-gray-300 leading-relaxed font-light">
+               {/* 修正：文字改為 gray-300 確保在深色背景上的可讀性 */}
+              <p>
+                <strong className="text-white text-xl block mb-2">擁有三十年經驗的招牌職人團隊。</strong>
+                我們不只是製作招牌，更是您品牌的建構者。從「全方位設計規劃」到單一「製作執行」，無論是全套服務還是維修保養，Eday 都能完美配合。
+              </p>
+              <p>
+                我們的自設工廠讓我們能精準控制品質與交期，這就是為什麼許多連鎖品牌選擇信任我們。
+              </p>
+            </div>
+            <div className="mt-10">
+               <Link href="/about" className="inline-flex items-center text-white border-b border-white pb-1 hover:text-red-500 hover:border-red-500 transition-colors">
+                 MORE ABOUT US <span className="ml-2">→</span>
+               </Link>
+            </div>
+          </div>
+
+          {/* 右側：視覺平衡圖片 (模擬圖9的結構) */}
+          <div className="relative">
+             <div className="aspect-[4/3] rounded-sm overflow-hidden bg-neutral-800">
+               <img src="https://placehold.co/800x600/111/333?text=Workshop" alt="職人精神" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+             </div>
+             {/* 裝飾框線 */}
+             <div className="absolute -bottom-6 -right-6 w-full h-full border-2 border-neutral-700 -z-10 hidden md:block"></div>
+          </div>
+        </div>
+      </section>
 
       {/* 4. Services Section */}
       <ServicesSection />
@@ -56,4 +133,11 @@
         </div>
       </section>
 
-// ... (下方的 CTA 保持不變)
+      {/* 6. CTA */}
+      <section className="py-24 px-6 md:px-20 max-w-6xl mx-auto">
+        <DynamicCTA />
+      </section>
+
+    </main>
+  );
+}
