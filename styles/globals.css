@@ -4,26 +4,23 @@
 
 :root {
   --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 3, 7, 18; /* gray-950 */
-  --background-end-rgb: 17, 24, 39; /* gray-900 */
+  --background-start-rgb: 10, 10, 10; /* 更深沈的黑 */
+  --background-end-rgb: 20, 20, 20;   /* 接近純黑的灰 */
+  
+  /* 這是你照片上的紅色，我們定義為變數方便管理 */
+  --brand-red: 220, 38, 38; /* 對應 Tailwind red-600 */
 }
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-start-rgb));
+  background: linear-gradient(to bottom, rgb(var(--background-start-rgb)), rgb(var(--background-end-rgb)));
 }
 
-/* 自定義 Scrollbar (可選) */
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: #111827; 
-}
+/* 讓捲軸也變成紅色系 */
 ::-webkit-scrollbar-thumb {
-  background: #374151; 
+  background: #dc2626; 
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #10b981; 
+  background: #b91c1c; 
 }
