@@ -3,24 +3,23 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 10, 10, 10; /* 更深沈的黑 */
-  --background-end-rgb: 20, 20, 20;   /* 接近純黑的灰 */
-  
-  /* 這是你照片上的紅色，我們定義為變數方便管理 */
-  --brand-red: 220, 38, 38; /* 對應 Tailwind red-600 */
+  --brand-red: 220, 38, 38;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(to bottom, rgb(var(--background-start-rgb)), rgb(var(--background-end-rgb)));
+  @apply bg-neutral-950 text-white;
+  /* 這裡加入網格背景：深灰色的線條，營造空間感 */
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(50, 50, 50, 0.3) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(50, 50, 50, 0.3) 1px, transparent 1px);
 }
 
-/* 讓捲軸也變成紅色系 */
-::-webkit-scrollbar-thumb {
-  background: #dc2626; 
-  border-radius: 4px;
+/* 隱藏 Scrollbar 但保留功能，讓畫面更乾淨 */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
-::-webkit-scrollbar-thumb:hover {
-  background: #b91c1c; 
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
