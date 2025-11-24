@@ -13,10 +13,10 @@ const config: Config = {
           red: "var(--brand-red)",
         },
       },
+      // ▼▼▼ 關鍵：動畫定義 ▼▼▼
       animation: {
-        "infinite-scroll": "infinite-scroll 25s linear infinite",
-        // 新增：反向滾動
-        "infinite-scroll-reverse": "infinite-scroll-reverse 25s linear infinite", 
+        "infinite-scroll": "infinite-scroll 30s linear infinite",
+        "infinite-scroll-reverse": "infinite-scroll-reverse 30s linear infinite",
         "blob": "blob 7s infinite",
       },
       keyframes: {
@@ -24,11 +24,11 @@ const config: Config = {
           from: { transform: "translateX(0)" },
           to: { transform: "translateX(-100%)" },
         },
-        // 新增：反向 Keyframes
         "infinite-scroll-reverse": {
           from: { transform: "translateX(-100%)" },
           to: { transform: "translateX(0)" },
         },
+        // ▲▲▲ 關鍵結束 ▲▲▲
         blob: {
           "0%": { transform: "translate(0px, 0px) scale(1)" },
           "33%": { transform: "translate(30px, -50px) scale(1.1)" },
