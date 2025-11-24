@@ -1,18 +1,18 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { BrandMarquee } from "@/components/home/BrandMarquee";
-import { ServicePills } from "@/components/home/ServicePills";
+import { ServicesSection } from "@/components/home/ServicesSection"; // 引入新組件
 import { DynamicCTA } from "@/components/home/DynamicCTA";
 
 export default function Home() {
   return (
-    <main className="min-h-screen pt-20 overflow-x-hidden">
+    <main className="min-h-screen pt-20 overflow-x-hidden bg-neutral-950">
       
-      {/* 1. Hero Section: 巨大的標題與輪播 (這裡簡化輪播為靜態圖+動畫標題) */}
+      {/* 1. Hero Section */}
       <section className="relative h-[85vh] flex flex-col justify-center px-6 md:px-20 border-b border-neutral-800">
-        <div className="max-w-7xl mx-auto w-full">
+        <div className="max-w-7xl mx-auto w-full z-10">
           <h1 className="text-6xl md:text-9xl font-black uppercase italic tracking-tighter leading-[0.9] mb-8">
-            <span className="block text-outline-white hover:text-white transition-colors duration-500">We Make</span>
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-gray-500 to-gray-200 hover:text-white transition-colors duration-500">We Make</span>
             <span className="block text-red-600">Signage</span>
             <span className="block text-white">Stand Out.</span>
           </h1>
@@ -21,67 +21,76 @@ export default function Home() {
             專注於將您的品牌視覺轉化為實體震撼。
           </p>
           <div className="flex gap-4">
+            <Link href="/estimate">
+              <Button className="rounded-full text-lg px-8 py-6 shadow-red-600/20">立即估價</Button>
+            </Link>
             <Link href="/cases">
-              <Button className="rounded-full text-lg px-8 py-6">VIEW WORK</Button>
+              <Button variant="outline" className="rounded-full text-lg px-8 py-6">作品案例</Button>
             </Link>
           </div>
         </div>
-        
-        {/* 裝飾用的巨大背景字 */}
-        <div className="absolute -right-20 top-1/2 -translate-y-1/2 text-[20rem] font-black text-neutral-900 -z-10 select-none opacity-50">
+        {/* 背景大字 */}
+        <div className="absolute -right-20 top-1/2 -translate-y-1/2 text-[20vw] font-black text-neutral-900 -z-0 select-none opacity-50 pointer-events-none">
           EDAY
         </div>
       </section>
 
-      {/* 2. 品牌牆 Marquee */}
+      {/* 2. Brand Wall (4 Rows) */}
       <BrandMarquee />
 
-      {/* 3. Who We Are + Services (雙欄佈局) */}
-      <section className="py-24 px-6 md:px-20 max-w-8xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+      {/* 3. Who We Are Section (獨立區塊，修正文字顏色與平衡) */}
+      <section className="py-24 md:py-32 px-6 md:px-20 bg-neutral-900 relative border-b border-neutral-800">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           
-          {/* 左側：WE ARE (Why Us) */}
-          <div className="sticky top-24">
-            <h2 className="text-5xl font-black uppercase text-blue-600 mb-8 tracking-tighter">
-              WHO WE ARE
+          {/* 左側：大標題與簡介 */}
+          <div>
+            <span className="text-blue-500 font-bold tracking-widest mb-4 block">ABOUT US</span>
+            <h2 className="text-5xl md:text-8xl font-black uppercase text-white mb-8 tracking-tighter leading-none">
+              WHO <br/>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">WE ARE</span>
             </h2>
-            <h3 className="text-3xl font-bold text-white mb-6">
-              擁有三十年經驗的<br/>招牌職人團隊。
-            </h3>
-            <p className="text-gray-400 text-lg leading-relaxed mb-8">
-              我們不只是製作招牌，更是您品牌的建構者。從「全方位設計規劃」到單一「製作執行」，無論是全套服務還是維修保養，Eday 都能完美配合。
-              <br/><br/>
-              我們的自設工廠讓我們能精準控制品質與交期，這就是為什麼許多連鎖品牌選擇信任我們。
-            </p>
-            <img 
-              src="https://placehold.co/600x400/111/333" 
-              alt="工廠實景" 
-              className="rounded-2xl border border-neutral-800 w-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-            />
+            <div className="space-y-6 text-lg text-gray-300 leading-relaxed font-light">
+               {/* 修正：文字改為 gray-300 確保在深色背景上的可讀性 */}
+              <p>
+                <strong className="text-white text-xl block mb-2">擁有三十年經驗的招牌職人團隊。</strong>
+                我們不只是製作招牌，更是您品牌的建構者。從「全方位設計規劃」到單一「製作執行」，無論是全套服務還是維修保養，Eday 都能完美配合。
+              </p>
+              <p>
+                我們的自設工廠讓我們能精準控制品質與交期，這就是為什麼許多連鎖品牌選擇信任我們。
+              </p>
+            </div>
+            <div className="mt-10">
+               <Link href="/about" className="inline-flex items-center text-white border-b border-white pb-1 hover:text-red-500 hover:border-red-500 transition-colors">
+                 MORE ABOUT US <span className="ml-2">→</span>
+               </Link>
+            </div>
           </div>
 
-          {/* 右側：WHAT WE DO (Services Pills) */}
-          <div>
-             <h2 className="text-5xl font-black uppercase text-white mb-12 tracking-tighter text-right">
-              WHAT WE DO
-            </h2>
-            <ServicePills />
+          {/* 右側：視覺平衡圖片 (模擬圖9的結構) */}
+          <div className="relative">
+             <div className="aspect-[4/3] rounded-sm overflow-hidden bg-neutral-800">
+               <img src="https://placehold.co/800x600/111/333?text=Workshop" alt="職人精神" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+             </div>
+             {/* 裝飾框線 */}
+             <div className="absolute -bottom-6 -right-6 w-full h-full border-2 border-neutral-700 -z-10 hidden md:block"></div>
           </div>
         </div>
       </section>
 
-      {/* 4. 精選作品 (Grid Layout) */}
+      {/* 4. Services Section (獨立區塊，包含 desktop/mobile 雙版本) */}
+      <ServicesSection />
+
+      {/* 5. Featured Works */}
       <section className="py-24 border-t border-neutral-800 bg-neutral-900/30">
-        <div className="px-6 md:px-20 mb-12 flex justify-between items-end">
+        <div className="px-6 md:px-20 mb-12 flex flex-col md:flex-row justify-between items-end gap-4">
           <h2 className="text-5xl font-black uppercase text-white tracking-tighter">
             Featured <span className="text-red-600">Works</span>
           </h2>
-          <Link href="/cases" className="text-gray-400 hover:text-white border-b border-gray-600 pb-1 hidden md:block">
+          <Link href="/cases" className="text-gray-400 hover:text-white border-b border-gray-600 pb-1">
             VIEW ALL CASES →
           </Link>
         </div>
         
-        {/* 這裡模擬 Primo 的作品卡片 */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 px-1">
            {/* Case 1 */}
            <div className="group relative aspect-square bg-neutral-800 overflow-hidden cursor-pointer">
@@ -110,7 +119,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 5. 互動諮詢 CTA */}
+      {/* 6. CTA */}
       <section className="py-24 px-6 md:px-20 max-w-6xl mx-auto">
         <DynamicCTA />
       </section>

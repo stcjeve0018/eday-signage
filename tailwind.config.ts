@@ -10,17 +10,24 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          red: "var(--brand-red)", // 我們自定義的招牌紅
+          red: "var(--brand-red)",
         },
       },
       animation: {
         "infinite-scroll": "infinite-scroll 25s linear infinite",
-        "blob": "blob 7s infinite", // 給 CTA 背景用的流體動畫
+        // 新增：反向滾動
+        "infinite-scroll-reverse": "infinite-scroll-reverse 25s linear infinite", 
+        "blob": "blob 7s infinite",
       },
       keyframes: {
         "infinite-scroll": {
           from: { transform: "translateX(0)" },
           to: { transform: "translateX(-100%)" },
+        },
+        // 新增：反向 Keyframes
+        "infinite-scroll-reverse": {
+          from: { transform: "translateX(-100%)" },
+          to: { transform: "translateX(0)" },
         },
         blob: {
           "0%": { transform: "translate(0px, 0px) scale(1)" },
