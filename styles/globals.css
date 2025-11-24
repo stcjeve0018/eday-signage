@@ -7,15 +7,16 @@
 }
 
 body {
-  @apply bg-neutral-950 text-white;
-  /* 這裡加入網格背景：深灰色的線條，營造空間感 */
+  /* 修改：背景改為白色，文字改為深灰 */
+  @apply bg-white text-neutral-900;
+  
+  /* 網格背景改淡，讓它在白色上呈現細緻質感 */
   background-size: 40px 40px;
   background-image: 
-    linear-gradient(to right, rgba(50, 50, 50, 0.3) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(50, 50, 50, 0.3) 1px, transparent 1px);
+    linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
 }
 
-/* 隱藏 Scrollbar 但保留功能，讓畫面更乾淨 */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -24,27 +25,22 @@ body {
   scrollbar-width: none;
 }
 
-/* ▼▼▼ 強制加入動畫設定 (無視 tailwind.config) ▼▼▼ */
-@keyframes infinite-scroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-100%); }
+/* 確保動畫依然存在 */
+@keyframes scroll-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
 }
-
-@keyframes infinite-scroll-reverse {
-  from { transform: translateX(-100%); }
-  to { transform: translateX(0); }
+@keyframes scroll-right {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(0); }
 }
-
-.animate-infinite-scroll {
-  animation: infinite-scroll 30s linear infinite;
+.animate-force-left {
+  animation: scroll-left 40s linear infinite;
 }
-
-.animate-infinite-scroll-reverse {
-  animation: infinite-scroll-reverse 30s linear infinite;
+.animate-force-right {
+  animation: scroll-right 40s linear infinite;
 }
-
-/* 讓滑鼠移過去時暫停 */
-.group:hover .animate-infinite-scroll,
-.group:hover .animate-infinite-scroll-reverse {
+.group:hover .animate-force-left,
+.group:hover .animate-force-right {
   animation-play-state: paused;
 }

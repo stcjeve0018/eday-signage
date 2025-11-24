@@ -35,30 +35,31 @@ const SERVICES = [
   },
 ];
 
+// ... (上方的 imports 和 SERVICES 資料不變)
+
 export function ServicesSection() {
-  const [activeId, setActiveId] = useState<string | null>("01"); // 預設展開第一個，避免畫面空空的
+  const [activeId, setActiveId] = useState<string | null>("01");
   const [mobileActiveId, setMobileActiveId] = useState<string | null>(null);
 
-  // 處理滑鼠進入離開
   const handleMouseEnter = (id: string) => setActiveId(id);
-  // 選擇性：如果移出整個區域要不要縮回？通常保持最後一個狀態體驗較好，故不設 onMouseLeave 清空
 
   return (
-    <section className="py-24 bg-neutral-950 overflow-hidden">
+    // 修改：背景改為白色 bg-white
+    <section className="py-24 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 md:px-10 relative">
         
         {/* Title */}
-        <div className="flex flex-col md:flex-row items-baseline justify-between mb-12 pb-8 border-b border-neutral-900 z-10 relative">
-           <h2 className="text-5xl md:text-7xl font-black uppercase text-white tracking-tighter">
+        <div className="flex flex-col md:flex-row items-baseline justify-between mb-12 pb-8 border-b border-neutral-200 z-10 relative">
+           {/* 修改：標題改為黑色 text-neutral-900 */}
+           <h2 className="text-5xl md:text-7xl font-black uppercase text-neutral-900 tracking-tighter">
             What We <span className="text-red-600">Do</span>
           </h2>
           <span className="text-neutral-500 font-bold tracking-widest mt-4 md:mt-0">服務項目</span>
         </div>
 
-        {/* --- Desktop View (Framer Motion Smooth Accordion) --- */}
+        {/* --- Desktop View --- */}
         <div className="hidden md:flex h-[600px] gap-3 relative">
           
-          {/* 左側裝飾動畫 (仿照參考影片) */}
           <SideDecoration direction="left" />
 
           {SERVICES.map((service) => {
@@ -66,17 +67,19 @@ export function ServicesSection() {
             return (
               <motion.div
                 key={service.id}
-                layout // 這是滑順的關鍵：自動處理寬度補間
+                layout
                 onMouseEnter={() => handleMouseEnter(service.id)}
-                className={`relative rounded-2xl overflow-hidden border cursor-pointer`}
+                // 修改：邊框顏色改深色，背景保持黑色卡片
+                className={`relative rounded-2xl overflow-hidden border cursor-pointer bg-neutral-900 shadow-xl`}
                 initial={false}
                 animate={{
-                  flex: isActive ? 3.5 : 1, // 展開比例與收縮比例
-                  borderColor: isActive ? "#dc2626" : "#262626", // 紅色 vs 灰色
+                  flex: isActive ? 3.5 : 1,
+                  // 展開時紅框，未展開時深灰框
+                  borderColor: isActive ? "#dc2626" : "#404040", 
                 }}
-                transition={{ type: "spring", stiffness: 200, damping: 25 }} // 彈簧物理效果
+                transition={{ type: "spring", stiffness: 200, damping: 25 }}
               >
-                {/* 背景圖層 */}
+                {/* ... (內部邏輯不變，保持黑色卡片的帥氣) ... */}
                 <motion.div 
                   className="absolute inset-0"
                   animate={{ filter: isActive ? "grayscale(0%)" : "grayscale(100%)" }}
@@ -84,14 +87,11 @@ export function ServicesSection() {
                 >
                   <img src={service.image} alt={service.title} className="w-full h-full object-cover" />
                   <div className={`absolute inset-0 transition-colors duration-500 ${isActive ? 'bg-neutral-900/30' : 'bg-neutral-950/70'}`} />
-                  {/* 紅色濾鏡遮罩 */}
                   {isActive && <div className="absolute inset-0 bg-red-900/20 mix-blend-multiply" />}
                 </motion.div>
 
-                {/* 內容層 */}
                 <div className="absolute inset-0 p-6 z-10 overflow-hidden">
                   
-                  {/* 狀態 A: 未展開時顯示 (直式文字) */}
                   <AnimatePresence>
                     {!isActive && (
                       <motion.div
@@ -102,15 +102,14 @@ export function ServicesSection() {
                         className="h-full flex flex-col items-center justify-center gap-6"
                       >
                         <span className="text-xl font-mono font-bold text-red-600 rotate-0">{service.id}</span>
-                        {/* 直式排版，不旋轉，正向直書 */}
-                        <h3 className="text-3xl font-black text-neutral-500 [writing-mode:vertical-rl] [text-orientation:upright] tracking-[0.4em] select-none">
+                        {/* 未展開時：文字為淺灰 text-neutral-400 */}
+                        <h3 className="text-3xl font-black text-neutral-400 [writing-mode:vertical-rl] [text-orientation:upright] tracking-[0.4em] select-none">
                           {service.title}
                         </h3>
                       </motion.div>
                     )}
                   </AnimatePresence>
 
-                  {/* 狀態 B: 展開時顯示 (橫式詳細內容) */}
                   <AnimatePresence>
                     {isActive && (
                       <motion.div
@@ -134,26 +133,25 @@ export function ServicesSection() {
                       </motion.div>
                     )}
                   </AnimatePresence>
-
                 </div>
               </motion.div>
             );
           })}
 
-          {/* 右側裝飾動畫 */}
           <SideDecoration direction="right" />
-
         </div>
 
-        {/* --- Mobile View (保持不變) --- */}
-        <div className="md:hidden flex flex-col gap-4">
+        {/* ... (Mobile View 保持不變，或可將背景改為深色卡片) ... */}
+         <div className="md:hidden flex flex-col gap-4">
           {SERVICES.map((service) => (
             <motion.div
               key={service.id}
               onClick={() => setMobileActiveId(mobileActiveId === service.id ? null : service.id)}
-              className={`relative overflow-hidden rounded-xl border transition-all duration-300 ${mobileActiveId === service.id ? 'bg-red-900/40 border-red-600' : 'bg-neutral-900 border-neutral-800'}`}
+              // 手機版卡片：深色背景
+              className={`relative overflow-hidden rounded-xl border transition-all duration-300 ${mobileActiveId === service.id ? 'bg-neutral-800 border-red-600' : 'bg-neutral-900 border-neutral-800'}`}
               layout
             >
+              {/* ... 手機版內容 ... */}
                <div className="flex items-center justify-between p-6">
                   <h3 className={`text-2xl font-black italic tracking-wide ${mobileActiveId === service.id ? 'text-white' : 'text-neutral-300'}`}>
                     <span className="text-red-600 mr-4 font-mono">{service.id}</span>
@@ -169,13 +167,12 @@ export function ServicesSection() {
             </motion.div>
           ))}
         </div>
-
       </div>
     </section>
   );
 }
 
-// 裝飾用側邊動畫組件
+// 側邊裝飾保持不變 (顏色可微調適應白底，或保持深色對比)
 function SideDecoration({ direction }: { direction: "left" | "right" }) {
   const isLeft = direction === "left";
   return (
@@ -183,19 +180,11 @@ function SideDecoration({ direction }: { direction: "left" | "right" }) {
       {[...Array(8)].map((_, i) => (
          <motion.div 
             key={i}
-            className={`w-full bg-neutral-700 rounded-full ${isLeft ? "origin-right" : "origin-left"}`}
+            className={`w-full bg-neutral-300 rounded-full ${isLeft ? "origin-right" : "origin-left"}`}
             initial={{ height: "10%" }}
             animate={{ height: ["10%", "60%", "10%"] }}
-            transition={{ 
-              duration: 2, 
-              repeat: Infinity, 
-              ease: "easeInOut", 
-              delay: i * 0.1, // 錯開時間產生波浪感
-            }}
-            style={{ 
-              opacity: 1 - (i * 0.1),
-              backgroundColor: i % 2 === 0 ? "#dc2626" : "#525252" // 紅灰交錯
-            }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: i * 0.1 }}
+            style={{ opacity: 1 - (i * 0.1), backgroundColor: i % 2 === 0 ? "#dc2626" : "#e5e5e5" }}
          />
       ))}
     </div>

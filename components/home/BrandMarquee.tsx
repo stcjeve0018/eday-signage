@@ -7,8 +7,8 @@ const LOGOS_ROW_4 = ["Gogoro", "Acer", "Asus", "MSI", "Giant", "Eva Air", "China
 
 export function BrandMarquee() {
   return (
-    <div className="w-full py-20 bg-neutral-950 border-y border-neutral-900 flex flex-col gap-8 overflow-hidden">
-      {/* ▼▼▼ 核彈級解法：直接注入 CSS 動畫定義 ▼▼▼ */}
+    // 修改：背景改為白色 bg-white，邊框改淡 border-neutral-100
+    <div className="w-full py-20 bg-white border-y border-neutral-100 flex flex-col gap-8 overflow-hidden">
       <style jsx global>{`
         @keyframes scroll-left {
           0% { transform: translateX(0); }
@@ -24,7 +24,6 @@ export function BrandMarquee() {
         .animate-force-right {
           animation: scroll-right 40s linear infinite;
         }
-        /* Hover 時暫停 */
         .group:hover .animate-force-left,
         .group:hover .animate-force-right {
           animation-play-state: paused;
@@ -32,32 +31,29 @@ export function BrandMarquee() {
       `}</style>
       
       <MarqueeRow logos={LOGOS_ROW_1} direction="left" />
-      <MarqueeRow logos={LOGOS_ROW_2} direction="right" opacity="opacity-50" />
+      <MarqueeRow logos={LOGOS_ROW_2} direction="right" opacity="opacity-40" />
       <MarqueeRow logos={LOGOS_ROW_3} direction="left" />
-      <MarqueeRow logos={LOGOS_ROW_4} direction="right" opacity="opacity-50" />
+      <MarqueeRow logos={LOGOS_ROW_4} direction="right" opacity="opacity-40" />
     </div>
   );
 }
 
 function MarqueeRow({ logos, direction, opacity = "opacity-100" }: { logos: string[], direction: "left" | "right", opacity?: string }) {
-  // 使用剛剛定義的 class
   const animationClass = direction === "left" ? "animate-force-left" : "animate-force-right";
   
   return (
     <div className={`flex w-full overflow-hidden select-none group ${opacity} hover:opacity-100 transition-opacity duration-300`}>
-      {/* 列表 1 */}
       <ul className={`flex min-w-full shrink-0 items-center justify-around gap-12 px-6 ${animationClass}`}>
         {logos.map((logo, index) => (
-          <li key={`a-${index}`} className="text-4xl md:text-5xl font-black text-neutral-800 uppercase italic tracking-tighter whitespace-nowrap">
+          // 修改：文字顏色改為淺灰 text-neutral-300，Hover 變深灰
+          <li key={`a-${index}`} className="text-4xl md:text-5xl font-black text-neutral-300 hover:text-neutral-800 transition-colors uppercase italic tracking-tighter whitespace-nowrap">
             {logo}
           </li>
         ))}
       </ul>
-      
-      {/* 列表 2 (無縫銜接用) */}
       <ul className={`flex min-w-full shrink-0 items-center justify-around gap-12 px-6 ${animationClass}`} aria-hidden="true">
         {logos.map((logo, index) => (
-          <li key={`b-${index}`} className="text-4xl md:text-5xl font-black text-neutral-800 uppercase italic tracking-tighter whitespace-nowrap">
+          <li key={`b-${index}`} className="text-4xl md:text-5xl font-black text-neutral-300 hover:text-neutral-800 transition-colors uppercase italic tracking-tighter whitespace-nowrap">
             {logo}
           </li>
         ))}
