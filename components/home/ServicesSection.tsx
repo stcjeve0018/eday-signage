@@ -2,13 +2,12 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 
-// 資料定義 (保持不變)
 const SERVICES = [
   { 
     id: "01", 
     title: "室內廣告規劃", 
     desc: "商場、百貨專櫃、企業形象牆。", 
-    image: "https://placehold.co/600x800/222/FFF?text=Indoor" // 改用直式圖片
+    image: "https://placehold.co/600x800/222/FFF?text=Indoor" 
   },
   { 
     id: "02", 
@@ -37,7 +36,6 @@ const SERVICES = [
 ];
 
 export function ServicesSection() {
-  // 手機版仍需要 state，桌機版改用 CSS hover
   const [mobileActiveId, setMobileActiveId] = useState<string | null>(null);
 
   return (
@@ -52,8 +50,7 @@ export function ServicesSection() {
           <span className="text-neutral-500 font-bold tracking-widest mt-4 md:mt-0">服務項目</span>
         </div>
 
-        {/* --- Desktop View (Horizontal Hover Accordion) --- */}
-        {/* 這裡使用 flex 和 h-[500px] 定義一個水平區域 */}
+        {/* --- Desktop View (水平展開，文字保持正向) --- */}
         <div className="hidden md:flex h-[500px] gap-2">
           {SERVICES.map((service) => (
             <div
@@ -63,26 +60,26 @@ export function ServicesSection() {
               {/* 背景圖片 (Hover 時顯示) */}
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                 <img src={service.image} alt={service.title} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" />
-                {/* 紅色遮罩 */}
                 <div className="absolute inset-0 bg-red-900/60 mix-blend-multiply"></div>
               </div>
               
               {/* 內容層 */}
               <div className="absolute inset-0 p-6 flex flex-col justify-between z-10 bg-gradient-to-t from-neutral-950/90 via-transparent to-neutral-950/40">
                 {/* 頂部：編號與標題 */}
-                <div className="flex items-center gap-4">
+                {/* 使用 min-w-max 確保在卡片很窄時，文字不會折行，而是保持完整 (可能會超出邊界被 overflow-hidden 切掉，這樣比較美觀) */}
+                <div className="flex items-center gap-4 min-w-max">
                    <span className="text-xl font-mono font-bold text-red-600 group-hover:text-white transition-colors">
                     {service.id}
                   </span>
-                  {/* 標題在未 Hover 時垂直排列，Hover 時轉正 */}
-                  <h3 className="text-2xl font-black italic tracking-wide text-neutral-400 group-hover:text-white transition-all duration-300 whitespace-nowrap [writing-mode:vertical-rl] rotate-180 group-hover:[writing-mode:horizontal-tb] group-hover:rotate-0">
+                  {/* 文字修正：移除 vertical-rl，改為永遠水平 */}
+                  <h3 className="text-2xl font-black italic tracking-wide text-neutral-400 group-hover:text-white transition-colors duration-300 whitespace-nowrap">
                     {service.title}
                   </h3>
                 </div>
 
                 {/* 底部：描述與箭頭 (只在 Hover 時顯示) */}
                 <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 translate-y-4 group-hover:translate-y-0 delay-100">
-                  <p className="text-white/90 text-lg font-medium mb-4">
+                  <p className="text-white/90 text-lg font-medium mb-4 line-clamp-2">
                     {service.desc}
                   </p>
                    <span className="inline-flex items-center gap-2 text-red-500 font-bold uppercase tracking-wider text-sm">
@@ -94,7 +91,7 @@ export function ServicesSection() {
           ))}
         </div>
 
-        {/* --- Mobile View (Vertical Stack - 保持簡單易用) --- */}
+        {/* --- Mobile View (保持不變) --- */}
         <div className="md:hidden flex flex-col gap-4">
           {SERVICES.map((service) => (
             <motion.div
