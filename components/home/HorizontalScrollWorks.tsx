@@ -22,97 +22,93 @@ export function HorizontalScrollWorks() {
     offset: ["start start", "end end"],
   });
 
-  // --- 🔧 修正：使用 Motion Template 解決混合單位跳動問題 ---
+  // --- 📐 響應式動畫核心 ---
+  const rawProgress = useTransform(scrollYProgress, [0, 0.6, 1], [0, 1, 1]);
 
-  // 1. 先算出純數字進度 (0 -> 1)
-  // [0, 0.8]: 數值從 0 變到 1 (移動)
-  // [0.8, 1]: 數值維持 1 (定格)
-  const rawProgress = useTransform(scrollYProgress, [0, 0.8, 1], [0, 1, 1]);
-
-  // 2. 動態組裝 calc 字串
-  // 我們讓數學公式跟著 rawProgress 跑：
-  // 當進度是 0: calc(0 * -305vw - 0 * 10.5rem) = 0
-  // 當進度是 1: calc(1 * -305vw - 1 * 10.5rem) = 目標位移 (-305vw - 10.5rem)
-  // 這樣 Framer 只需要處理 0->1 的數字變化，不會被 calc 搞混
-  const x = useMotionTemplate`calc(${rawProgress} * -305vw - ${rawProgress} * 10.5rem)`;
+  // CSS 變數驅動位移
+  const x = useMotionTemplate`calc(${rawProgress} * var(--move-target) - ${rawProgress} * 10.5rem)`;
   
-  // 3. 圓形放大 (維持原樣)
-  // 0.85 開始放大
-  const circleScale = useTransform(scrollYProgress, [0.85, 1], [0, 60]);
-  
-  // 4. 文字淡出 (維持原樣)
-  // 0.9 開始淡出
-  const textOpacity = useTransform(scrollYProgress, [0.9, 1], [1, 0]);
+  // 動畫與透明度
+  const circleScale = useTransform(scrollYProgress, [0.8, 1], [0, 150]);
+  const textOpacity = useTransform(scrollYProgress, [0.85, 1], [1, 0]);
 
   return (
-    <section ref={targetRef} className="relative h-[800vh] bg-neutral-950">
+    <section 
+      ref={targetRef} 
+      className="relative bg-neutral-950 [--move-target:-600vw] md:[--move-target:-305vw] h-[500vh] md:h-[1000vh]"
+    >
       
       <div className="sticky top-0 flex h-screen flex-col overflow-hidden">
         
         {/* 標題區 */}
-        <div className="h-[30vh] flex-shrink-0 flex items-start px-6 md:px-20 z-30 mix-blend-difference bg-transparent pt-24 pointer-events-none">
+        <div className="flex-shrink-0 flex items-end md:items-start px-6 md:px-20 z-30 mix-blend-difference bg-transparent pointer-events-none h-[20vh] pb-4 md:h-[30vh] md:pt-24 md:pb-0">
            <div>
-             <h2 className="text-6xl md:text-8xl font-black uppercase text-white tracking-tighter leading-[0.9] mb-4">
+             <h2 className="font-black uppercase text-white tracking-tighter leading-[0.9] mb-2 md:mb-4 text-4xl md:text-8xl">
               Selected <br/>
               <span className="text-red-600">Works</span>
             </h2>
-            <p className="text-neutral-400 text-lg border-l-4 border-red-600 pl-6 font-bold">
+            <p className="text-neutral-400 border-l-4 border-red-600 pl-4 md:pl-6 font-bold text-sm md:text-lg">
                SCROLL TO VIEW REEL
             </p>
            </div>
         </div>
 
         {/* 膠卷區 */}
-        <div className="h-[70vh] flex-1 flex items-start w-full relative pt-32">
+        <div className="flex-1 flex items-start w-full relative pt-10 md:pt-20 h-[80vh] md:h-[70vh]">
             
             <motion.div 
               style={{ x }} 
               className="flex gap-0 items-center relative z-10"
             >
-              {/* Spacer: 25vw */}
-              <div className="w-[25vw] flex-shrink-0" />
+              {/* 1. 左側留白 Spacer */}
+              <div className="flex-shrink-0 w-[5vw] md:w-[25vw]" />
 
               {WORKS.map((work) => (
-                <div key={work.id} className="relative flex flex-col flex-shrink-0">
-                  <div className="bg-black py-6 px-3 shadow-2xl relative">
+                // 2. 卡片容器
+                <div 
+                  key={work.id} 
+                  className="relative flex flex-col flex-shrink-0 w-[calc(85vw+1.5rem)] md:w-[calc(40vw+1.5rem)]"
+                >
+                  <div className="bg-black shadow-2xl relative py-3 px-3 md:py-6">
                     
-                    {/* Top Holes */}
-                    <div className="h-4 w-full flex justify-between gap-3 overflow-hidden mb-3 opacity-60">
+                    {/* 上排齒孔 */}
+                    <div className="w-full flex justify-between overflow-hidden opacity-60 mb-2 md:mb-3 gap-2 md:gap-3 h-3 md:h-4">
                       {[...Array(10)].map((_, i) => (
-                        <div key={`top-${i}`} className="h-full w-3 bg-neutral-800/50 rounded-sm flex-shrink-0" />
+                        <div key={`top-${i}`} className="bg-neutral-800/50 rounded-sm flex-shrink-0 h-full w-2 md:w-3" />
                       ))}
                     </div>
 
-                    {/* Image Area */}
-                    <div className="group relative h-[35vh] w-[70vw] md:w-[40vw] overflow-hidden bg-neutral-900 border border-neutral-800/30">
+                    {/* 照片區域 */}
+                    <div className="group relative w-full overflow-hidden bg-neutral-900 border border-neutral-800/30 h-[45vh] md:h-[35vh]">
                       <Image
                         src={work.img}
                         alt={work.title}
                         fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-105 opacity-70 group-hover:opacity-100"
+                        className="object-cover transition-transform duration-700 group-hover:scale-105 opacity-100 md:opacity-70 md:group-hover:opacity-100"
                         unoptimized
                       />
                       <div className="absolute inset-0 bg-neutral-900/10 pointer-events-none mix-blend-overlay" />
-                      <div className="absolute inset-0 p-6 flex flex-col justify-between">
+                      
+                      <div className="absolute inset-0 flex flex-col justify-between p-4 md:p-6">
                         <div className="flex justify-between items-start">
-                          <span className="text-white/40 font-mono text-[10px] rotate-90 origin-top-left translate-x-3">KODAK 400</span>
-                          <span className="text-red-600 font-bold text-xl font-mono">#{work.id}</span>
+                          <span className="text-white/40 font-mono origin-top-left rotate-90 text-[8px] translate-x-2 md:text-[10px] md:translate-x-3">KODAK 400</span>
+                          <span className="text-red-600 font-bold font-mono text-base md:text-xl">#{work.id}</span>
                         </div>
-                        <div className="translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                          <span className="text-red-500 font-mono text-xs tracking-widest uppercase bg-black px-2 py-1">
+                        <div className="transition-all duration-500 translate-y-0 opacity-100 md:translate-y-4 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100">
+                          <span className="text-red-500 font-mono tracking-widest uppercase bg-black px-2 py-1 text-[10px] md:text-xs">
                               {work.type}
                           </span>
-                          <h3 className="text-2xl md:text-4xl font-black text-white uppercase italic tracking-tighter mt-2 shadow-black drop-shadow-lg leading-tight">
+                          <h3 className="font-black text-white uppercase italic tracking-tighter mt-2 shadow-black drop-shadow-lg leading-tight text-xl md:text-4xl">
                               {work.title}
                           </h3>
                         </div>
                       </div>
                     </div>
 
-                    {/* Bottom Holes */}
-                    <div className="h-4 w-full flex justify-between gap-3 overflow-hidden mt-3 opacity-60">
+                    {/* 下排齒孔 */}
+                    <div className="w-full flex justify-between overflow-hidden opacity-60 mt-2 md:mt-3 gap-2 md:gap-3 h-3 md:h-4">
                       {[...Array(10)].map((_, i) => (
-                        <div key={`bottom-${i}`} className="h-full w-3 bg-neutral-800/50 rounded-sm flex-shrink-0" />
+                        <div key={`bottom-${i}`} className="bg-neutral-800/50 rounded-sm flex-shrink-0 h-full w-2 md:w-3" />
                       ))}
                     </div>
                   </div>
@@ -120,21 +116,22 @@ export function HorizontalScrollWorks() {
                 </div>
               ))}
 
-              {/* ALL CASES 終點區塊 */}
-              <div className="relative flex flex-col flex-shrink-0 h-[50vh] min-w-[100vw] justify-center items-center">
+              {/* 3. 終點區塊 (ALL CASES) */}
+              {/* 🔴 關鍵修正：移除了 overflow-hidden */}
+              <div className="relative flex flex-col flex-shrink-0 w-[100vw] justify-center items-center h-[50vh]">
                 
                 <motion.div style={{ opacity: textOpacity }} className="text-center group cursor-pointer relative z-20 mix-blend-difference text-white">
-                    <p className="font-bold text-sm md:text-xl mb-4 tracking-[0.4em] uppercase opacity-80">Want to see more?</p>
+                    <p className="font-bold mb-4 tracking-[0.4em] uppercase opacity-80 text-xs md:text-xl">Want to see more?</p>
                     
                     <Link href="/cases" className="block relative">
-                      <h3 className="text-6xl md:text-9xl font-black uppercase italic tracking-tighter transition-colors duration-300">
+                      <h3 className="font-black uppercase italic tracking-tighter transition-colors duration-300 text-5xl md:text-9xl">
                         ALL CASES
                       </h3>
                     </Link>
 
-                    <div className="mt-8">
+                    <div className="mt-6 md:mt-8">
                       <Link href="/cases">
-                        <button className="px-8 py-3 md:px-10 md:py-4 border border-current rounded-full font-bold transition-all duration-300 flex items-center gap-3 mx-auto text-sm md:text-lg">
+                        <button className="border border-current rounded-full font-bold transition-all duration-300 flex items-center mx-auto px-6 py-3 text-sm gap-2 md:px-10 md:py-4 md:text-lg md:gap-3">
                           瀏覽所有作品
                           <span>→</span>
                         </button>
@@ -142,7 +139,6 @@ export function HorizontalScrollWorks() {
                     </div>
                 </motion.div>
 
-                {/* 白色擴散圓形 */}
                 <motion.div 
                   className="absolute top-1/2 left-1/2 w-[5vw] h-[5vw] bg-white rounded-full pointer-events-none z-10"
                   style={{ 

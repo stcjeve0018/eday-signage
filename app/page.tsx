@@ -10,7 +10,7 @@ import { StatsCounter } from "@/components/home/StatsCounter";
 export default function Home() {
   return (
     // ⚠️ 修改：移除了 overflow-x-hidden，這樣 sticky 才會生效
-    <main className="min-h-screen pt-16 bg-white">
+    <main className="min-h-screen pt-0 bg-white">
       
       {/* 1. Hero Section */}
       <section className="relative h-[90vh] flex flex-col justify-center px-6 md:px-20 bg-neutral-950 text-white overflow-hidden">
