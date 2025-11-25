@@ -6,11 +6,15 @@
   --brand-red: 220, 38, 38;
 }
 
+/* ⚠️ 修改：將 overflow-x-hidden 加在這裡 */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
 body {
-  /* 修改：背景改為白色，文字改為深灰 */
   @apply bg-white text-neutral-900;
   
-  /* 網格背景改淡，讓它在白色上呈現細緻質感 */
   background-size: 40px 40px;
   background-image: 
     linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
@@ -25,7 +29,7 @@ body {
   scrollbar-width: none;
 }
 
-/* 確保動畫依然存在 */
+/* ... (下方的動畫 keyframes 保持不變) ... */
 @keyframes scroll-left {
   0% { transform: translateX(0); }
   100% { transform: translateX(-100%); }
